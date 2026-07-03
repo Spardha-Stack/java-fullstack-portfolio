@@ -1,0 +1,31 @@
+# Render Blueprint — optional. You can also just create the service manually
+# in the Render dashboard (see docs/DEPLOYMENT.md) and skip this file entirely.
+#
+# Note: Render's free/managed MySQL offering varies by plan and region; if it's
+# not available on your account, provision MySQL on Railway or PlanetScale
+# instead and just set DB_URL/DB_USERNAME/DB_PASSWORD below to point at it.
+
+services:
+  - type: web
+    name: spardha-portfolio-backend
+    runtime: docker
+    dockerfilePath: ./backend/Dockerfile
+    dockerContext: ./backend
+    plan: free
+    envVars:
+      - key: DB_URL
+        sync: false
+      - key: DB_USERNAME
+        sync: false
+      - key: DB_PASSWORD
+        sync: false
+      - key: FRONTEND_URL
+        sync: false
+      - key: MAIL_USERNAME
+        sync: false
+      - key: MAIL_PASSWORD
+        sync: false
+      - key: NOTIFY_EMAIL
+        sync: false
+      - key: SEED_DATABASE
+        value: "true"
