@@ -1,74 +1,82 @@
-import React, { useState } from 'react';
-import { motion, AnimatePresence } from 'framer-motion';
-import { FaTimes, FaCertificate } from 'react-icons/fa';
-import certifications from '../../data/certifications.js';
+import { motion } from "framer-motion";
+import certifications from "../../data/certifications";
 
 export default function Certifications() {
-  const [active, setActive] = useState(null);
-
   return (
     <section id="certifications" className="section-container">
+
       <motion.div
-        initial={{ opacity: 0, y: 24 }}
+        initial={{ opacity: 0, y: 25 }}
         whileInView={{ opacity: 1, y: 0 }}
-        viewport={{ once: true, amount: 0.3 }}
-        transition={{ duration: 0.6 }}
-        className="mb-14"
+        viewport={{ once: true }}
+        transition={{ duration: .6 }}
+        className="mb-12"
       >
-        <p className="section-tag">07 — Certifications</p>
-        <h2 className="section-title">Continuous Learning</h2>
+        <p className="section-tag">
+          07 — Certifications
+        </p>
+
+        <h2 className="section-title">
+          Certifications & Learning
+        </h2>
       </motion.div>
 
-      <div className="flex gap-4 overflow-x-auto pb-4 snap-x snap-mandatory -mx-6 px-6 md:mx-0 md:px-0">
-        {certifications.map((cert, i) => (
-          <motion.button
-            key={`${cert.name}-${i}`}
-            onClick={() => setActive(cert)}
-            initial={{ opacity: 0, y: 16 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true, amount: 0.3 }}
-            transition={{ duration: 0.4, delay: i * 0.04 }}
-            whileHover={{ y: -5 }}
-            className="glass min-w-[240px] snap-start text-left p-5 hover:border-neon-cyan/60 transition-colors"
+      <div className="grid gap-8 sm:grid-cols-2 xl:grid-cols-3 lg:grid-cols-2">
+
+        {certifications.map((cert, index) => (
+
+          <motion.div
+            key={index}
+            initial={{ opacity:0,y:30 }}
+            whileInView={{ opacity:1,y:0 }}
+            viewport={{ once:true }}
+            transition={{ delay:index*0.05 }}
+            whileHover={{ y:-8 }}
+            className="glass rounded-2xl overflow-hidden border border-white/10 hover:border-cyan-400 transition duration-300 group"
           >
-            <FaCertificate className="text-neon-cyan mb-3" size={18} />
-            <div className="font-semibold text-sm mb-1">{cert.name}</div>
-            <div className="text-neon-cyan text-xs mb-2">{cert.org}</div>
-            <div className="font-mono text-[11px] text-white/40">{cert.date}</div>
-          </motion.button>
+
+            <div className="overflow-hidden h-52">
+
+              <img
+                src={cert.image}
+                alt={cert.name}
+                className="w-full h-full object-contain bg-white p-2"
+                // className="w-full h-full object-cover group-hover:scale-105 duration-500"
+              />
+
+            </div>
+
+            <div className="p-5">
+
+              <h3 className="font-semibold text-lg mb-1">
+                {cert.name}
+              </h3>
+
+              <p className="text-cyan-400 text-sm">
+                {cert.org}
+              </p>
+
+              <p className="text-white/50 text-sm mt-1">
+                {cert.date}
+              </p>
+
+              <a
+                href={cert.link}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="inline-block mt-5 px-4 py-2 rounded-lg bg-cyan-500 hover:bg-cyan-400 text-black font-medium transition"
+              >
+                View Certificate ↗
+              </a>
+
+            </div>
+
+          </motion.div>
+
         ))}
+
       </div>
 
-      <AnimatePresence>
-        {active && (
-          <motion.div
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            exit={{ opacity: 0 }}
-            onClick={() => setActive(null)}
-            className="fixed inset-0 z-[200] bg-black/70 backdrop-blur-sm flex items-center justify-center p-6"
-          >
-            <motion.div
-              initial={{ opacity: 0, scale: 0.92 }}
-              animate={{ opacity: 1, scale: 1 }}
-              exit={{ opacity: 0, scale: 0.92 }}
-              onClick={(e) => e.stopPropagation()}
-              className="glass max-w-sm w-full p-8 relative"
-            >
-              <button
-                onClick={() => setActive(null)}
-                className="absolute top-4 right-4 text-white/50 hover:text-white"
-              >
-                <FaTimes />
-              </button>
-              <FaCertificate className="text-neon-cyan mb-4" size={28} />
-              <h3 className="font-display font-semibold text-xl mb-2">{active.name}</h3>
-              <p className="text-neon-cyan text-sm mb-1">{active.org}</p>
-              <p className="font-mono text-xs text-white/40">{active.date}</p>
-            </motion.div>
-          </motion.div>
-        )}
-      </AnimatePresence>
     </section>
   );
 }

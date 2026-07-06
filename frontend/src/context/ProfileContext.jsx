@@ -20,10 +20,10 @@ const PROFILE = {
   summary:
     'Ambitious and results-driven Software Engineer skilled in Java, Python, and the MERN stack, with strong proficiency in Data Structures & Algorithms, AI, and cloud technologies. Experienced in building scalable full-stack applications, integrating RESTful APIs, and deploying intelligent solutions on IBM Cloud.',
   socials: {
-    github: '#',
-    linkedin: '#',
-    leetcode: '#',
-    hackerrank: '#',
+    github: 'https://github.com/Spardha-Stack',
+    linkedin: 'https://www.linkedin.com/in/spardha-shukla-1bb9a9279/',
+    leetcode: 'https://leetcode.com/u/SPARDHA829982/',
+    hackerrank: 'https://www.hackerrank.com/profile/spardha964864sh1',
   },
 };
 

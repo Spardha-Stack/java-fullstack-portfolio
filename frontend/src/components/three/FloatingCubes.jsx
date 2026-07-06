@@ -2,7 +2,7 @@ import React, { useRef } from 'react';
 import { useFrame } from '@react-three/fiber';
 
 const CUBES = [
-  { position: [-3.2, 1.4, -2], scale: 0.55, speed: 0.4, color: '#3B82F6' },
+  { position: [3.9, 1.8,0.8], scale: 0.55, speed: 0.4, color: '#3B82F6' },
   { position: [3.4, -1.2, -1.5], scale: 0.4, speed: 0.6, color: '#22D3EE' },
   { position: [2.6, 2.0, -3], scale: 0.3, speed: 0.5, color: '#A855F7' },
   { position: [-2.8, -1.8, -2.5], scale: 0.35, speed: 0.35, color: '#22D3EE' },
