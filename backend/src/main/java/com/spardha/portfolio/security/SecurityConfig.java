@@ -1,5 +1,6 @@
 package com.spardha.portfolio.security;
 
+import org.springframework.web.cors.CorsConfigurationSource;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
@@ -29,19 +30,21 @@ public class SecurityConfig {
     @Bean
     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
         http
-            .csrf(csrf -> csrf.disable())
-            .sessionManagement(sm -> sm.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
-            .authorizeHttpRequests(auth -> auth
-                .requestMatchers("/api/projects/**", "/api/skills/**", "/api/experience/**",
-                        "/api/education/**", "/api/certificates/**", "/api/achievements/**",
-                        "/api/profile/**", "/api/contact")
-                .permitAll()
-                .requestMatchers("/swagger-ui/**", "/v3/api-docs/**").permitAll()
-                // Reserved for a future admin panel (see class-level note).
-                .requestMatchers("/api/admin/**").authenticated()
-                .anyRequest().permitAll()
-            )
-            .httpBasic(basic -> {}); // placeholder auth mechanism for the reserved admin routes
+                .csrf(csrf -> csrf.disable())
+                .cors(cors -> {
+                })
+                .sessionManagement(sm -> sm.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
+                .authorizeHttpRequests(auth -> auth
+                        .requestMatchers("/api/projects/**", "/api/skills/**", "/api/experience/**",
+                                "/api/education/**", "/api/certificates/**", "/api/achievements/**",
+                                "/api/profile/**", "/api/contact")
+                        .permitAll()
+                        .requestMatchers("/swagger-ui/**", "/v3/api-docs/**").permitAll()
+                        // Reserved for a future admin panel (see class-level note).
+                        .requestMatchers("/api/admin/**").authenticated()
+                        .anyRequest().permitAll())
+                .httpBasic(basic -> {
+                }); // placeholder auth mechanism for the reserved admin routes
 
         return http.build();
     }
