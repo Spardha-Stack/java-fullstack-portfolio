@@ -31,6 +31,7 @@ export const ProfileProvider = ({ children }) => {
     const fetchProfile = async () => {
       try {
         const { data } = await profileService.get();
+        console.log(data);
 
         setProfile({
           ...defaultProfile,
