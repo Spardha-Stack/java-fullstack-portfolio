@@ -1,36 +1,58 @@
-import React, { createContext, useContext } from 'react';
-import profileImage from '../assets/images/profile.jpg';
+import React, { createContext, useContext, useEffect, useState } from "react";
+import profileImage from "../assets/images/profile.jpg";
+import { profileService } from "../services/api";
 
-// Static fallback so the UI is fully populated even before the
-// Spring Boot API (Phase 4) is live. Once the backend is running,
-// pages can switch to the services in src/services/api.js instead.
-const PROFILE = {
-  name: 'Spardha Shukla',
-  title: 'Software Developer Engineer',
-  roles: [
-    'Java Full Stack Developer',
-    'AI Engineer',
-    'Problem Solver',
-    'Open Source Learner',
-  ],
+const defaultProfile = {
+  name: "",
+  title: "",
+  roles: [],
   photo: profileImage,
-  email: 'spardha964864shukla@gmail.com',
-  phone: '+91 82998 27036',
-  location: 'Kanpur, Uttar Pradesh, India',
-  summary:
-    'Ambitious and results-driven Software Engineer skilled in Java, Python, and the MERN stack, with strong proficiency in Data Structures & Algorithms, AI, and cloud technologies. Experienced in building scalable full-stack applications, integrating RESTful APIs, and deploying intelligent solutions on IBM Cloud.',
+  email: "",
+  phone: "",
+  location: "",
+  summary: "",
   socials: {
-    github: 'https://github.com/Spardha-Stack',
-    linkedin: 'https://www.linkedin.com/in/spardha-shukla-1bb9a9279/',
-    leetcode: 'https://leetcode.com/u/SPARDHA829982/',
-    hackerrank: 'https://www.hackerrank.com/profile/spardha964864sh1',
+    github: "",
+    linkedin: "",
+    leetcode: "",
+    hackerrank: "",
   },
 };
 
-const ProfileContext = createContext(PROFILE);
+const ProfileContext = createContext(defaultProfile);
 
-export const ProfileProvider = ({ children }) => (
-  <ProfileContext.Provider value={PROFILE}>{children}</ProfileContext.Provider>
-);
+export const ProfileProvider = ({ children }) => {
+  const [profile, setProfile] = useState(defaultProfile);
+
+  useEffect(() => {
+    const fetchProfile = async () => {
+      try {
+        const { data } = await profileService.get();
+
+        setProfile({
+          ...data,
+          photo: profileImage,
+          socials: {
+            github: data.githubUrl,
+            linkedin: data.linkedinUrl,
+            leetcode: data.leetcodeUrl,
+            hackerrank:
+              "https://www.hackerrank.com/profile/spardha964864sh1",
+          },
+        });
+      } catch (error) {
+        console.error("Failed to load profile", error);
+      }
+    };
+
+    fetchProfile();
+  }, []);
+
+  return (
+    <ProfileContext.Provider value={profile}>
+      {children}
+    </ProfileContext.Provider>
+  );
+};
 
 export const useProfile = () => useContext(ProfileContext);

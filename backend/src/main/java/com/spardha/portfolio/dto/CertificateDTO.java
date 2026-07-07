@@ -14,4 +14,6 @@ public class CertificateDTO {
     private String name;
     private String org;
     private String date;
+    private String image;
+    private String link;
 }

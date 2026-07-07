@@ -1,9 +1,24 @@
-import React from 'react';
-import { motion } from 'framer-motion';
-import skills from '../../data/skills.js';
-import SkillCard from '../ui/SkillCard.jsx';
+import React, { useEffect, useState } from "react";
+import { motion } from "framer-motion";
+import { skillService } from "../../services/api";
+import SkillCard from "../ui/SkillCard.jsx";
 
 export default function Skills() {
+  const [skills, setSkills] = useState([]);
+
+  useEffect(() => {
+    const fetchSkills = async () => {
+      try {
+        const { data } = await skillService.getAll();
+        setSkills(data);
+      } catch (error) {
+        console.error("Failed to load skills", error);
+      }
+    };
+
+    fetchSkills();
+  }, []);
+
   return (
     <section id="skills" className="section-container">
       <motion.div
@@ -19,7 +34,11 @@ export default function Skills() {
 
       <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-4">
         {skills.map((skill) => (
-          <SkillCard key={skill.name} name={skill.name} level={skill.level} />
+          <SkillCard
+            key={skill.id}
+            name={skill.name}
+            level={skill.level}
+          />
         ))}
       </div>
     </section>

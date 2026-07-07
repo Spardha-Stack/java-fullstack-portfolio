@@ -96,8 +96,7 @@ export default function Hero() {
           animate={{ opacity: 1, scale: 1 }}
           transition={{ duration: 0.8, delay: 0.2 }}
           
-          // className="relative flex justify-end md:translate-x-48 lg:translate-x-56"
-          // className="relative flex justify-end md:translate-x-4"
+          
           className="relative flex justify-center md:ml-10"
         >
           <div className="absolute inset-0 rounded-full bg-gradient-to-tr from-neon-blue via-neon-cyan

@@ -1,15 +1,29 @@
-import React, { useMemo, useState } from 'react';
+import React, { useEffect, useMemo, useState } from 'react';
 import { motion } from 'framer-motion';
-import projects from '../../data/projects.js';
+import { projectService } from '../../services/api';
 import ProjectCard from '../ui/ProjectCard.jsx';
 
 export default function Projects() {
+  const [projects, setProjects] = useState([]);
   const [query, setQuery] = useState('');
   const [activeTech, setActiveTech] = useState('All');
 
+  useEffect(() => {
+    const fetchProjects = async () => {
+      try {
+        const { data } = await projectService.getAll();
+        setProjects(data);
+      } catch (error) {
+        console.error('Failed to load projects', error);
+      }
+    };
+
+    fetchProjects();
+  }, []);
+
   const allTech = useMemo(
     () => ['All', ...new Set(projects.flatMap((p) => p.tech))],
-    []
+    [projects]
   );
 
   const filtered = projects.filter((p) => {
@@ -40,6 +54,7 @@ export default function Projects() {
           className="flex-1 bg-white/5 border border-white/15 rounded-xl px-4 py-2.5 text-sm
             focus:outline-none focus:border-neon-cyan transition-colors"
         />
+
         <div className="flex flex-wrap gap-2">
           {allTech.map((t) => (
             <button
@@ -61,6 +76,7 @@ export default function Projects() {
         {filtered.map((project) => (
           <ProjectCard key={project.id} project={project} />
         ))}
+
         {filtered.length === 0 && (
           <p className="text-white/40 text-sm col-span-full text-center py-10">
             No projects match that search.

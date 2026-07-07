@@ -8,6 +8,9 @@ const api = axios.create({
     'Content-Type': 'application/json',
   },
 });
+export const profileService = {
+  get: () => api.get("/profile"),
+};
 
 export const projectService = {
   getAll: () => api.get('/projects'),

@@ -1,9 +1,24 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import { motion } from 'framer-motion';
-import experience from '../../data/experience.js';
+import { experienceService } from '../../services/api';
 import TimelineItem from '../ui/TimelineItem.jsx';
 
 export default function Experience() {
+  const [experience, setExperience] = useState([]);
+
+  useEffect(() => {
+    const fetchExperience = async () => {
+      try {
+        const { data } = await experienceService.getAll();
+        setExperience(data);
+      } catch (error) {
+        console.error('Failed to load experience', error);
+      }
+    };
+
+    fetchExperience();
+  }, []);
+
   return (
     <section className="section-container">
       <motion.div
@@ -20,7 +35,7 @@ export default function Experience() {
       <div>
         {experience.map((entry, i) => (
           <TimelineItem
-            key={`${entry.role}-${i}`}
+            key={entry.id}
             title={entry.role}
             org={entry.org}
             period={entry.period}

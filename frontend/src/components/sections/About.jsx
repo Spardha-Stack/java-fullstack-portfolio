@@ -1,11 +1,13 @@
-import React from 'react';
-import { motion } from 'framer-motion';
-import { useProfile } from '../../context/ProfileContext.jsx';
-import education from '../../data/education.js';
-import certifications from '../../data/certifications.js';
-import experience from '../../data/experience.js';
-import projects from '../../data/projects.js';
-import StatCard from '../ui/StatCard.jsx';
+import React, { useEffect, useState } from "react";
+import { motion } from "framer-motion";
+import { useProfile } from "../../context/ProfileContext.jsx";
+import {
+  educationService,
+  certificateService,
+  experienceService,
+  projectService,
+} from "../../services/api";
+import StatCard from "../ui/StatCard.jsx";
 
 const fadeUp = {
   hidden: { opacity: 0, y: 24 },
@@ -14,6 +16,39 @@ const fadeUp = {
 
 export default function About() {
   const profile = useProfile();
+
+  const [education, setEducation] = useState([]);
+  const [certifications, setCertifications] = useState([]);
+  const [experience, setExperience] = useState([]);
+  const [projects, setProjects] = useState([]);
+
+  useEffect(() => {
+    const fetchData = async () => {
+      try {
+        const [
+          educationRes,
+          certificationRes,
+          experienceRes,
+          projectRes,
+        ] = await Promise.all([
+          educationService.getAll(),
+          certificateService.getAll(),
+          experienceService.getAll(),
+          projectService.getAll(),
+        ]);
+
+        setEducation(educationRes.data);
+        setCertifications(certificationRes.data);
+        setExperience(experienceRes.data);
+        setProjects(projectRes.data);
+      } catch (error) {
+        console.error("Failed to load about data", error);
+      }
+    };
+
+    fetchData();
+  }, []);
+
   const latestEducation = education[0];
 
   return (
@@ -36,31 +71,48 @@ export default function About() {
           viewport={{ once: true, amount: 0.2 }}
           variants={fadeUp}
         >
-          <p className="text-white/60 leading-relaxed mb-5">{profile.summary}</p>
-          <p className="text-white/60 leading-relaxed mb-8">
-            I care about solving genuinely hard problems, optimizing performance, and shipping
-            software that feels effortless to use — from a face-recognition attendance system to
-            an AI-driven nutrition assistant.
+          <p className="text-white/60 leading-relaxed mb-5">
+            {profile.summary}
           </p>
 
-          <div className="grid grid-cols-2 gap-4 text-sm">
-            <div>
-              <span className="block text-white/40 font-mono text-xs uppercase tracking-wide mb-1">Degree</span>
-              {latestEducation.degree} · {latestEducation.score}
+          <p className="text-white/60 leading-relaxed mb-8">
+            I care about solving genuinely hard problems, optimizing
+            performance, and shipping software that feels effortless to use —
+            from a face-recognition attendance system to an AI-driven nutrition
+            assistant.
+          </p>
+
+          {latestEducation && (
+            <div className="grid grid-cols-2 gap-4 text-sm">
+              <div>
+                <span className="block text-white/40 font-mono text-xs uppercase tracking-wide mb-1">
+                  Degree
+                </span>
+                {latestEducation.degree} · {latestEducation.score}
+              </div>
+
+              <div>
+                <span className="block text-white/40 font-mono text-xs uppercase tracking-wide mb-1">
+                  College
+                </span>
+                {latestEducation.institution}
+              </div>
+
+              <div>
+                <span className="block text-white/40 font-mono text-xs uppercase tracking-wide mb-1">
+                  Based in
+                </span>
+                {profile.location}
+              </div>
+
+              <div>
+                <span className="block text-white/40 font-mono text-xs uppercase tracking-wide mb-1">
+                  Focus
+                </span>
+                Full-Stack + AI / Cloud
+              </div>
             </div>
-            <div>
-              <span className="block text-white/40 font-mono text-xs uppercase tracking-wide mb-1">College</span>
-              {latestEducation.institution}
-            </div>
-            <div>
-              <span className="block text-white/40 font-mono text-xs uppercase tracking-wide mb-1">Based in</span>
-              {profile.location}
-            </div>
-            <div>
-              <span className="block text-white/40 font-mono text-xs uppercase tracking-wide mb-1">Focus</span>
-              Full-Stack + AI / Cloud
-            </div>
-          </div>
+          )}
         </motion.div>
 
         <motion.div
@@ -71,9 +123,16 @@ export default function About() {
           className="grid grid-cols-2 gap-4"
         >
           <StatCard target={projects.length} label="Projects Shipped" />
-          <StatCard target={certifications.length} suffix="+" label="Certifications" />
+          <StatCard
+            target={certifications.length}
+            suffix="+"
+            label="Certifications"
+          />
           <StatCard target={8.4} decimals={2} label="CGPA" />
-          <StatCard target={experience.length - 1} label="Internships" />
+          <StatCard
+            target={Math.max(experience.length - 1, 0)}
+            label="Internships"
+          />
         </motion.div>
       </div>
     </section>

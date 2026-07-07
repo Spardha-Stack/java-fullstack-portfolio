@@ -1,9 +1,24 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import { motion } from 'framer-motion';
-import education from '../../data/education.js';
+import { educationService } from '../../services/api';
 import TimelineItem from '../ui/TimelineItem.jsx';
 
 export default function Education() {
+  const [education, setEducation] = useState([]);
+
+  useEffect(() => {
+    const fetchEducation = async () => {
+      try {
+        const { data } = await educationService.getAll();
+        setEducation(data);
+      } catch (error) {
+        console.error('Failed to load education', error);
+      }
+    };
+
+    fetchEducation();
+  }, []);
+
   return (
     <section className="section-container">
       <motion.div
@@ -20,7 +35,7 @@ export default function Education() {
       <div>
         {education.map((entry, i) => (
           <TimelineItem
-            key={`${entry.degree}-${i}`}
+            key={entry.id}
             title={entry.degree}
             org={entry.institution}
             period={entry.period}

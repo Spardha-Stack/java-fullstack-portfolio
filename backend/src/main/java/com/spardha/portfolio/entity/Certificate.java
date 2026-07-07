@@ -25,6 +25,10 @@ public class Certificate {
     private String org;
 
     private String date;
+    private String image;
+
+    @Column(length = 1000)
+    private String link;
 
     @Column(name = "sort_order")
     private Integer sortOrder;
