@@ -1,127 +1,176 @@
-# Spardha Shukla — Java Full Stack Portfolio
+# 🌐 Java Full Stack Portfolio
 
-A production-structured portfolio application: React + Vite frontend, Spring Boot + MySQL backend.
+> A modern, production-ready Full Stack Developer Portfolio built with **React**, **Spring Boot**, and **MySQL**.
 
-## Status
+## 🚀 Overview
+This portfolio demonstrates full-stack development skills using React, Spring Boot, and MySQL. Portfolio sections are served dynamically through REST APIs.
 
-This is being built in phases:
+## ✨ Features
+- Dynamic Profile
+- Skills
+- Projects
+- Experience
+- Education
+- Certifications
+- Achievements
+- Contact Form
+- MySQL Integration
+- Email Notifications
+- Swagger API Docs
+- Responsive UI
 
-- [x] **Phase 1 — Project setup**: folder structure, configs, base app shell, Hero section with photo
-- [x] **Phase 2 — Frontend sections**: About, Skills, Experience, Projects, Certifications, Contact
-- [x] **Phase 3 — 3D scenes**: React Three Fiber hero background, floating objects, interactions
-- [x] **Phase 4 — Backend**: entities, DTOs, repositories, services, controllers, exception handling
-- [x] **Phase 5 — Database**: MySQL schema + seed data from resume
-- [x] **Phase 6 — Deployment**: env config, Vercel (frontend) + Render/Railway (backend)
-- [x] **Phase 7 — Multi-page routing & Achievements**: dedicated routes per section, loading screen, custom cursor, route-based code splitting
-
-All seven phases are complete. See `docs/DEPLOYMENT.md` for the full deploy walkthrough.
-
-## Routes
-
-| Path | Page |
-|---|---|
-| `/` | Home (hero + teasers) |
-| `/about` | About |
-| `/skills` | Skills |
-| `/experience` | Experience |
-| `/education` | Education |
-| `/projects` | Projects |
-| `/achievements` | Achievements |
-| `/certificates` | Certificates |
-| `/contact` | Contact |
-| `*` | 404 Not Found |
-
-Every page is a separate lazy-loaded chunk (`React.lazy` + `Suspense`), so the
-initial bundle only loads what the current route needs. A `LoadingScreen`
-covers both the initial app boot and any in-flight chunk load; a `CustomCursor`
-(desktop only) and `ScrollToTop` (resets scroll on route change) are mounted
-once in `Layout.jsx`, which wraps every route via React Router's `<Outlet />`.
-
-## API surface (Phase 4)
-
-| Method | Endpoint             | Description                        |
-|--------|-----------------------|-------------------------------------|
-| GET    | `/api/profile`         | Name, title, contact info, summary  |
-| GET    | `/api/projects`        | All projects                        |
-| GET    | `/api/projects/{id}`   | Single project                      |
-| GET    | `/api/skills`          | All skills                          |
-| GET    | `/api/experience`      | Work experience                     |
-| GET    | `/api/education`       | Education history                   |
-| GET    | `/api/certificates`    | Certifications                      |
-| GET    | `/api/achievements`    | Achievements                        |
-| POST   | `/api/contact`         | Submit contact form (validated)     |
-
-All GET endpoints are public. `/api/admin/**` is reserved (requires auth) for a future
-admin panel — the `User` entity/repository already exist for that, just not wired to a
-login flow yet. Full request/response schemas are auto-documented at `/swagger-ui.html`
-once the backend is running.
-
-## Structure
-
-```
-portfolio/
-├── frontend/               React + Vite + Tailwind
-│   ├── src/
-│   │   ├── components/
-│   │   │   ├── layout/      Navbar, Footer
-│   │   │   ├── ui/          Buttons, cards, inputs
-│   │   │   ├── sections/    Hero, About, Skills, Projects...
-│   │   │   └── three/       R3F scenes
-│   │   ├── pages/
-│   │   ├── hooks/
-│   │   ├── context/         ProfileContext (static fallback data)
-│   │   ├── services/        Axios API layer
-│   │   ├── data/            Static content mirroring API response shapes
-│   │   ├── animations/
-│   │   └── assets/
-│   ├── vercel.json          SPA rewrite rules for Vercel
-│   └── ...
-├── backend/                 Spring Boot (Java 21)
-│   ├── Dockerfile            Multi-stage build for Render/Railway
-│   ├── .dockerignore
-│   └── src/main/java/com/spardha/portfolio/
-│       ├── controller/
-│       ├── service/
-│       ├── repository/
-│       ├── entity/
-│       ├── dto/
-│       ├── mapper/
-│       ├── exception/
-│       ├── config/           CORS, OpenAPI, DataSeeder
-│       └── security/
-├── docs/                    DATABASE.md, DEPLOYMENT.md, schema.sql
-└── render.yaml               Optional Render Blueprint
-```
-
-## Running locally
+## 🛠 Tech Stack
 
 ### Frontend
+- React
+- Vite
+- Tailwind CSS
+- Framer Motion
+- Axios
+- React Router
+- React Hook Form
+
+### Backend
+- Spring Boot
+- Spring MVC
+- Spring Data JPA
+- Hibernate
+- Maven
+- Lombok
+
+### Database
+- MySQL
+
+## 🏗 Architecture
+
+```text
+React
+ │
+Axios
+ │
+Spring Boot
+ │
+Service
+ │
+Repository
+ │
+Hibernate/JPA
+ │
+MySQL
+```
+
+## 📂 Project Structure
+
+```text
+portfolio/
+├── backend/
+├── frontend/
+│   ├── assets/
+│   ├── backup_data/
+│   ├── components/
+│   ├── context/
+│   ├── pages/
+│   ├── services/
+│   └── utils/
+├── docs/
+└── README.md
+```
+
+## 🌐 Routes
+
+- /
+- /about
+- /skills
+- /experience
+- /education
+- /projects
+- /achievements
+- /certificates
+- /contact
+
+## 📡 REST APIs
+
+- GET /api/profile
+- GET /api/skills
+- GET /api/projects
+- GET /api/projects/{id}
+- GET /api/experience
+- GET /api/education
+- GET /api/certificates
+- GET /api/achievements
+- POST /api/contact
+
+Swagger:
+http://localhost:8080/swagger-ui.html
+
+## ⚙ Local Setup
+
+Backend
+
+```bash
+cd backend
+mvn spring-boot:run
+```
+
+Frontend
+
 ```bash
 cd frontend
 npm install
 npm run dev
 ```
-Runs at `http://localhost:5173`. Requests to `/api/*` are proxied to the backend.
 
-### Backend
-Requires Java 21, Maven, and a local MySQL instance.
-```bash
-cd backend
-# create a database named portfolio_db, then:
-mvn spring-boot:run
+## 🗄 Database
+
+Create:
+
+```sql
+CREATE DATABASE springbootdb;
 ```
-Runs at `http://localhost:8080`. Swagger UI at `/swagger-ui.html`.
 
-### Environment variables
-Copy `frontend/.env.example` to `frontend/.env` and adjust as needed.
-Backend config (`application.properties`) reads from env vars — no secrets are hardcoded:
-`DB_URL`, `DB_USERNAME`, `DB_PASSWORD`, `FRONTEND_URL`, `MAIL_USERNAME`, `MAIL_PASSWORD`, `SEED_DATABASE`.
+Use environment variables:
 
-See `docs/DATABASE.md` for schema details and seeding behavior.
+```properties
+spring.datasource.url=${DB_URL}
+spring.datasource.username=${DB_USERNAME}
+spring.datasource.password=${DB_PASSWORD}
+```
 
-## Deployment (Phase 6)
-- Frontend → Vercel
-- Backend → Render or Railway
-- MySQL → managed instance on either platform
+Never commit passwords or secrets.
 
-Full instructions will land in `docs/DEPLOYMENT.md` once Phase 6 is built.
+## 📧 Contact Flow
+
+React Form → Spring Boot API → MySQL + Email → Success
+
+## 🚀 Deployment
+
+Frontend: Vercel
+
+Backend: Render / Railway
+
+Database: MySQL
+
+## 🔮 Future Enhancements
+
+- Admin Dashboard
+- Spring Security + JWT
+- Docker
+- CI/CD
+- Blog
+- Analytics
+
+## 👩‍💻 Author
+
+**Spardha Shukla**
+
+GitHub: https://github.com/Spardha-Stack
+
+LinkedIn: https://www.linkedin.com/in/spardha-shukla-1bb9a9279/
+
+LeetCode: https://leetcode.com/u/SPARDHA829982/
+
+Email: spardha964864shukla@gmail.com
+
+## ⭐ Support
+
+If you found this project useful, please give it a ⭐ on GitHub.
